@@ -23,12 +23,12 @@ def create(request):
             # Create signature
             priv_key = ECC.import_key(private_key)
             h = SHA3_256.new(ballot.encode('utf-8'))
-            signature = DSS.new(priv_key, 'fips-186-3').sign(h)
+            signature = DSS.new(priv_key, 'dss').sign(h)
             print('\nsignature: {}\n'.format(signature.hex()))
 
             # Verify the signature using registered public key
             pub_key = ECC.import_key(settings.PUBLIC_KEY)
-            verifier = DSS.new(pub_key, 'fips-186-3')
+            verifier = DSS.new(pub_key, 'dss')
         
             verifier.verify(h, signature)
             status = 'The ballot is signed successfully.'
